@@ -1,0 +1,24 @@
+# Skyramp Workspace Configuration
+workspace:
+  repoName: PellePedro/n8n-testb
+  repoUrl: https://github.com/PellePedro/n8n-testb
+metadata:
+  schemaVersion: v1
+  mcpVersion: 0.1.6
+  executorVersion: v1.3.23
+  createdAt: "2026-05-12T00:38:30.082Z"
+  updatedAt: "2026-05-12T00:38:30.089Z"
+services:
+  - serviceName: n8n
+    language: typescript
+    framework: playwright
+    testDirectory: packages/testing/playwright/tests
+    api:
+      schemaPath: http://localhost:5678/api/v1/openapi.json
+      authType: cookie
+      authHeader: Cookie
+      baseUrl: http://localhost:5678
+    runtimeDetails:
+      serverStartCommand: docker compose up -d n8n
+      runtime: docker
+      dockerNetwork: deployment-testbot_default
