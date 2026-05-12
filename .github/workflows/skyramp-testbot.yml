@@ -43,4 +43,4 @@ jobs:
           anthropicApiKey: ${{ secrets.SKYRAMP_TESTBOT_API_KEY }}
           githubToken: ${{ steps.app-token.outputs.token }}
           authTokenCommand: 'echo ${{ secrets.SKYRAMP_TEST_TOKEN }}'
-          targetSetupCommand: '/deployment-testbot/setup.sh'
+          targetSetupCommand: './deployment-testbot/setup.sh'
