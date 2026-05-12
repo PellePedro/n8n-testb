@@ -1,0 +1,28 @@
+[
+  {
+    "Source": "192.168.65.1:39998",
+    "Destination": "localhost",
+    "RequestBody": "{\"nodes\": [{\"name\": \"Source\", \"type\": \"trigger\", \"data\": [{\"json\": {\"id\": 42, \"value\": \"test-payload\"}}]}, {\"name\": \"Transform\", \"type\": \"set\"}], \"connections\": {\"Source\": {\"main\": [[{\"node\": \"Transform\", \"type\": \"main\", \"index\": 0}]]}}}",
+    "ResponseBody": "{\"data\": {\"nodeOutputs\": {\"Source\": [[{\"json\": {\"id\": 42, \"value\": \"test-payload\"}}]], \"Transform\": [[{\"json\": {\"id\": 42, \"value\": \"test-payload\"}}]]}, \"executionOrder\": [\"Source\", \"Transform\"], \"success\": true}}",
+    "RequestHeaders": {
+      "Content-Type": [
+        "application/json"
+      ],
+      "Cookie": [
+        "SKYRAMP_PLACEHOLDER_TOKEN"
+      ]
+    },
+    "ResponseHeaders": {
+      "Content-Type": [
+        "application/json"
+      ]
+    },
+    "Method": "POST",
+    "Path": "/rest/scenario/data-flow/simulate",
+    "QueryParams": {},
+    "StatusCode": 200,
+    "Port": 5678,
+    "Timestamp": "2026-05-12T01:21:05.769Z",
+    "Scheme": "http"
+  }
+]
