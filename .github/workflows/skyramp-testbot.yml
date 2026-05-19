@@ -1,0 +1,48 @@
+name: Skyramp Testbot
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  testbot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # Generate a GitHub App installation token to retrigger CI workflows on push
+      # https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1
+        with:
+          app-id: ${{ secrets.SKYRAMP_TESTBOT_APP_ID }}
+          private-key: ${{ secrets.SKYRAMP_TESTBOT_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+
+      - uses: skyramp/testbot@0601948440f6d88a0292dcada04feadb18824a68 # v0.10.0
+        with:
+          skyramp_license_file: ${{ secrets.SKYRAMP_LICENSE_FILE }}
+          anthropic_api_key: ${{ secrets.SKYRAMP_TESTBOT_API_KEY }}
+          github_token: ${{ steps.app-token.outputs.token }}
+          # auth_token_command: 'echo ${{ secrets.SKYRAMP_TEST_TOKEN }}'
+          skyrampExecutorVersion: v1.3.14
+          target_setup_command: "./deployment-testbot/setup.sh"
+          service_startup_command: "./deployment-testbot/setup.sh"
+          health_check_command: "curl -f http://localhost:5678/healthz"
+          health_check_timeout: 60
+          auth_token_command: "./deployment-testbot/get-token.sh"
+          testDirectory: "tests"
+          autoCommit: true
+          postPrComment: true
+          enableDebug: true
